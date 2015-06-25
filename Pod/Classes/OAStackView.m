@@ -70,6 +70,10 @@
     // Does not have any effect because `CATransformLayer` is not rendered.
 }
 
+-(void)setOpaque:(BOOL)opaque {
+    // Does not have any effect because `CATransformLayer` is not rendered.
+}
+
 - (void)setSpacing:(CGFloat)spacing {
   if (_spacing == spacing) { return; }
   
@@ -203,7 +207,7 @@
     previousView = [self lastVisibleItem];
     nextView = nil;
     
-    NSArray *constraints = [self constraintsBetweenView:self andView:previousView inAxis:self.axis];
+    NSArray *constraints = [self lastConstraintAffectingView:self andView:previousView inAxis:self.axis];
     [self removeConstraints:constraints];
     
     if (newItem) {

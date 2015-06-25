@@ -7,7 +7,7 @@
 
 iOS 9 introduced the very cool [UIStackView](https://developer.apple.com/library/prerelease/ios/documentation/UIKit/Reference/UIStackView_Class_Reference/), UIStackView can be used to easily create simple and complex layouts.
 
-As expected `UIStackView` can only be used for iOS9 and up. This project tries to port back the stackview to iOS 6+.
+As expected `UIStackView` can only be used for iOS 9 and up. This project tries to port back the stackview to iOS 7+.
 
 `OAStackView` aims at replicating all the features in `UIStackView`
 
@@ -112,12 +112,13 @@ All contributions in any form are welcomed, if you find the project helpful, and
 
 	@property(nonatomic,getter=isLayoutMarginsRelativeArrangement) BOOL layoutMarginsRelativeArrangement;    
 
-`UIStackViewDistribution` is also partially implemented (3 elements out of 5 are still not implemented)    
+`UIStackViewDistribution` is also partially implemented (2 elements out of 5 are still not implemented)    
+
 - [x] `UIStackViewDistributionFill`
 - [x] `UIStackViewDistributionFillEqually`    
-- [ ] `UIStackViewDistributionFillProportionally`   
+- [x] `UIStackViewDistributionFillProportionally`   
 - [ ] `UIStackViewDistributionEqualSpacing`    
-- [ ] `UIStackViewDistributionEqualCentering`   
+- [ ] `UIStackViewDistributionEqualCentering`
 
 Please refer to [UIStackView](https://developer.apple.com/library/prerelease/ios/documentation/UIKit/Reference/UIStackView_Class_Reference/) for proper documentation.
 

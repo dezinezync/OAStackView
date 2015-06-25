@@ -448,8 +448,26 @@ describe(@"OAStackView", ^{
         });
         
       });
-      
-      
+        
+      context(@"OAStackViewDistributionFillProportionally", ^{
+        it(@"Distributes the views proportionally based on their intrinsicContentSize", ^{
+          // Views 1, 2 and 3 are UIButtons. Changing the title affects their intrinsicContentSize.
+          // Since we're testing the vertical layout here, we add newlines to affect their intrinsicContentSize height
+          
+          [(UIButton *)view1 setTitle:@"the title" forState:UIControlStateNormal];
+          [(UIButton *)view2 setTitle:@"the title" forState:UIControlStateNormal];
+          [(UIButton *)view3 setTitle:@"the\ntitle" forState:UIControlStateNormal];
+          
+          stackView.distribution = OAStackViewDistributionFillProportionally;
+          
+          layoutView(stackView);
+          CGFloat proportion = view2.intrinsicContentSize.height / view1.intrinsicContentSize.height;
+          [[theValue(CGRectGetHeight(view2.frame)) should] beWithin:theValue(1) of:theValue(CGRectGetHeight(view1.frame) * proportion)];
+          
+          proportion = view3.intrinsicContentSize.height / view2.intrinsicContentSize.height;
+          [[theValue(CGRectGetHeight(view3.frame)) should] beWithin:theValue(1) of:theValue(CGRectGetHeight(view2.frame) * proportion)];
+        });
+      });
     });
     
   });
@@ -861,6 +879,25 @@ describe(@"OAStackView", ^{
           
         });
         
+        context(@"OAStackViewDistributionFillProportionally", ^{
+          it(@"Distributes the views proportionally based on their intrinsicContentSize", ^{
+            // Views 1, 2 and 3 are UIButtons. Changing the title affects their intrinsicContentSize.
+            
+            [(UIButton *)view1 setTitle:@"the title" forState:UIControlStateNormal];
+            [(UIButton *)view2 setTitle:@"the title" forState:UIControlStateNormal];
+            [(UIButton *)view3 setTitle:@"the title the title" forState:UIControlStateNormal];
+            
+            stackView.distribution = OAStackViewDistributionFillProportionally;
+            
+            layoutView(stackView);
+            CGFloat proportion = view2.intrinsicContentSize.width / view1.intrinsicContentSize.width;
+            [[theValue(CGRectGetWidth(view2.frame)) should] beWithin:theValue(1) of:theValue(CGRectGetWidth(view1.frame) * proportion)];
+            
+            proportion = view3.intrinsicContentSize.width / view2.intrinsicContentSize.width;
+            [[theValue(CGRectGetWidth(view3.frame)) should] beWithin:theValue(1) of:theValue(CGRectGetWidth(view2.frame) * proportion)];
+          });
+        });
+        
         
       });
       
@@ -869,6 +906,30 @@ describe(@"OAStackView", ^{
     
   });
   
+  
+  context(@"bug fixes", ^{
+  
+    __block UIView *view1, *view2, *view3;
+    
+    beforeEach(^{
+      view1 = createView(20, 100);
+      view2 = createView(30, 100);
+      view3 = createView(40, 100);
+      
+      stackView = [[OAStackView alloc] initWithArrangedSubviews:@[]];
+      stackView.axis = UILayoutConstraintAxisHorizontal;
+      stackView.translatesAutoresizingMaskIntoConstraints = NO;
+    });
+    
+    it(@"should add the trailing and leading superview constraint in case insert the first view", ^{
+      [stackView insertArrangedSubview:view1 atIndex:0];
+      [stackView insertArrangedSubview:view2 atIndex:1];
+      layoutView(stackView);
+      [[theValue(CGRectGetHeight(stackView.frame)) should] equal:theValue(100)];
+      [[theValue(CGRectGetWidth(stackView.frame)) should] equal:theValue(50)];
+    });
+    
+  });
 });
 
 SPEC_END
